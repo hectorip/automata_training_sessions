@@ -25,3 +25,61 @@
 #
 # Credit: This problem comes from "How to Design Programs", 2nd Ed.
 # by Felleisen, Findler, Flatt, and Krishnamurthi.  pg. 60.
+
+class PerformanceProfit
+  def initialize(fixed_cost = 180, unit_cost=0.04)
+    @fixed_cost = fixed_cost
+    @unit_cost = unit_cost
+
+    # Market (town) variables
+    @ref_price = 5
+    @ref_attend = 120
+    @inc_price = 0.1
+    @inc_attend = -15
+  end
+
+  def calc_cost(attendance)
+    @fixed_cost +  attendance * @unit_cost
+  end
+
+  def calc_profit(price, attendance)
+    income = attendance * price
+    income - calc_cost(attendance)
+  end
+
+  def calc_best_profit(inc)
+    price = @ref_price
+    profit = calc_profit(@ref_price, @ref_attend)
+    steps = 0
+    loop do
+      steps += 1
+      new_price = @ref_price + steps * @inc_price * inc
+      attend = @ref_attend + steps * @inc_attend * inc
+      new_profit = calc_profit(new_price, attend)
+      if profit < new_profit
+        price = new_price
+        profit = new_profit
+      else
+        break
+      end
+    end
+    [price, profit]
+  end
+
+  def calc_best_price
+    attendance = @ref_attend
+    price = @ref_price
+    profit = calc_best_profit( -1)
+    new_profit = calc_best_profit( 1)
+    if profit[1] < new_profit[1]
+      profit = new_profit
+    end
+    profit
+  end
+end
+
+if __FILE__ == $0
+  profit = PerformanceProfit.new
+  best_price = profit.calc_best_price
+  puts "The best price is #{best_price[0]} with #{best_price[1]} as profit"
+end
