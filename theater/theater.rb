@@ -67,8 +67,6 @@ class PerformanceProfit
   end
 
   def calc_best_price
-    attendance = @ref_attend
-    price = @ref_price
     profit = calc_best_profit( -1)
     new_profit = calc_best_profit( 1)
     if profit[1] < new_profit[1]
