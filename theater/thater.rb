@@ -25,3 +25,75 @@
 #
 # Credit: This problem comes from "How to Design Programs", 2nd Ed.
 # by Felleisen, Findler, Flatt, and Krishnamurthi.  pg. 60.
+
+def get_income(ticket_price_cents, attendees)
+
+	fixed_cost_cents = 18000
+	var_cost_cents = 4
+	
+	net_income = ticket_price_cents * attendees
+	net_cost = fixed_cost_cents + (var_cost_cents * attendees)
+	
+	final_income = net_income - net_cost
+	return final_income
+end
+
+def generate_incomes(generations_amount=10)
+	ticket_price_cents_up = 500
+	ticket_price_cents_down = 500
+
+	attendees_up = 120
+	attendees_down = 120
+
+	incomes = {}
+
+	for ten_cents in 0..generations_amount/2
+
+		# puts "--"
+		# puts ten_cents
+		income_up = get_income(ticket_price_cents_up, attendees_up)
+		income_down = get_income(ticket_price_cents_down, attendees_down)
+
+		
+		incomes[ticket_price_cents_up] = income_up
+		incomes[ticket_price_cents_down] = income_down
+		
+		# puts incomes.length()
+		
+		ticket_price_cents_up += 10
+		ticket_price_cents_down -= 10
+		
+		attendees_up -= 15
+		attendees_down += 15
+		
+
+	end
+	return incomes
+end
+
+def max_revenue(incomes)
+	
+	ticket = ""
+	max_revenue_aux = 0
+
+	incomes.each do |key, value|
+		puts "ticket: #{key} - profit: #{value}"
+
+		if (value > max_revenue_aux)
+			max_revenue_aux = value
+			ticket = key
+		end
+
+	end
+
+	puts "ticket: #{ticket} revenue #{max_revenue_aux} "
+end
+
+if __FILE__ == $0
+	
+
+	incomes = generate_incomes()
+
+	max_revenue(incomes)
+
+end
