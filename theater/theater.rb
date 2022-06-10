@@ -27,14 +27,14 @@
 # by Felleisen, Findler, Flatt, and Krishnamurthi.  pg. 60.
 
 class PerformanceProfit
-  def initialize(fixed_cost = 180, unit_cost=0.04)
+  def initialize(fixed_cost = 180 * 100, unit_cost=4)
     @fixed_cost = fixed_cost
     @unit_cost = unit_cost
 
     # Market (town) variables
-    @ref_price = 5
+    @ref_price = 5 * 100
     @ref_attend = 120
-    @inc_price = 0.1
+    @inc_price = 10
     @inc_attend = -15
   end
 
