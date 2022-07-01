@@ -11,6 +11,7 @@ end
 
 class Paper
   attr_reader :title, :isbn, :authors, :description, :published_at
+  attr_writer :description, :published_at
   #title;isbn;authors;description;publishedAt
   def initialize(title, isbn, authors, description="", published_at="")
     @title = title
@@ -46,8 +47,22 @@ class Library
 
   def load_papers(files, col_sep = ';')
     csv = load_csv(files, col_sep)
+    optional_map = {
+      "publishedAt" => "published_at"
+    }
+    optional_cols = {}
+    csv.headers.each_with_index  do |optional_col, index|
+      if index > 2
+        optional_cols[index] = optional_col
+      end
+    end
     csv.each do |row|
-      @papers.append(Paper.new(row[0], row[1], row[2], row[3]))
+      paper = Paper.new(row[0], row[1], row[2])
+      optional_cols.each do |index, optional_col|
+        prop_name = optional_map.fetch(optional_col, optional_col)
+        paper.send("#{prop_name}=", row[index])
+      end
+      @papers.append(paper)
     end
   end
 end
