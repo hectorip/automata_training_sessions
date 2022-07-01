@@ -11,6 +11,10 @@ class TestLibrary < Test::Unit::TestCase
 
     assert_equal(6, library.authors.count)
 
+    assert_equal("null-walter@echocat.org", library.authors[0].email)
+
+    assert_equal("Harald", library.authors[-1].first_name)
+
   end
 
   # def test_load_books
