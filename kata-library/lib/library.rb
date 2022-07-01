@@ -70,12 +70,13 @@ class Library
         paper.send("#{prop_name}=", row[index])
       end
 
-      @isbn_idx[paper.isbn] = @papers.count
+      paper_idx = @papers.count
       @papers.append(paper)
+      @isbn_idx[paper.isbn] = paper_idx
       unless @authors_idx.has_key?(paper.authors)
         @authors_idx[paper.authors] = []
       end
-      @authors_idx[paper.authors].append(paper.isbn)
+      @authors_idx[paper.authors].append(paper_idx)
     end
   end
 
@@ -92,10 +93,10 @@ class Library
       return find_by_isbn(isbn)
     end
     if authors
-      isbns = @authors_idx.fetch(authors, nil)
+      idxs = @authors_idx.fetch(authors, nil)
       papers = []
-      isbns.each do |isbn|
-        paper = find_by_isbn(isbn)
+      idxs.each do |idx|
+        paper = @papers[idx]
         if paper
           papers.append(paper)
         end
