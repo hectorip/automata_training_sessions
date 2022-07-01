@@ -104,4 +104,8 @@ class Library
     end
   end
 
+  def sort_by_title
+    @papers.sort_by { |paper| paper.title }
+  end
+
 end

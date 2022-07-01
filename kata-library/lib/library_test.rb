@@ -69,4 +69,17 @@ class TestLibrary < Test::Unit::TestCase
     assert_equal(2, papers.count)
   end
 
+  def test_order_papers_by_title
+    library = Library.new
+    library.load_papers(%w[../data/books.csv ../data/magazines.csv])
+
+    papers = library.sort_by_title
+
+    assert_equal("Beautiful cooking", papers[0].title)
+    assert_equal("Gourmet", papers[6].title)
+    assert_equal("Vinum", papers[-1].title)
+  end
+
+
+
 end
