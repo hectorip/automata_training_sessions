@@ -60,4 +60,13 @@ class TestLibrary < Test::Unit::TestCase
     assert_equal("14.06.2010", magazine.published_at)
   end
 
+  def test_find_by_authors
+    library = Library.new
+    library.load_papers(%w[../data/books.csv ../data/magazines.csv])
+
+    papers = library.find(nil, authors="null-mueller@echocat.org")
+    assert_not_nil(papers)
+    assert_equal(2, papers.count)
+  end
+
 end

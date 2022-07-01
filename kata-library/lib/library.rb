@@ -29,6 +29,7 @@ class Library
     @authors = []
     @papers = []
     @isbn_idx = {}
+    @authors_idx = {}
   end
 
   def load_csv(files, col_sep = ";")
@@ -68,18 +69,37 @@ class Library
         prop_name = optional_map.fetch(optional_col, optional_col)
         paper.send("#{prop_name}=", row[index])
       end
+
       @isbn_idx[paper.isbn] = @papers.count
       @papers.append(paper)
+      unless @authors_idx.has_key?(paper.authors)
+        @authors_idx[paper.authors] = []
+      end
+      @authors_idx[paper.authors].append(paper.isbn)
     end
   end
 
-  def find(isbn = nil)
+  def find_by_isbn(isbn)
+    idx = @isbn_idx.fetch(isbn, nil)
+    if idx == nil
+      return nil
+    end
+    @papers[idx]
+  end
+
+  def find(isbn = nil, authors = nil)
     if isbn
-      idx = @isbn_idx.fetch(isbn, nil)
-      if idx == nil
-        return nil
+      return find_by_isbn(isbn)
+    end
+    if authors
+      isbns = @authors_idx.fetch(authors, nil)
+      papers = []
+      isbns.each do |isbn|
+        paper = find_by_isbn(isbn)
+        if paper
+          papers.append(paper)
+        end
       end
-      @papers[idx]
     end
   end
 
