@@ -28,6 +28,7 @@ class Library
   def initialize
     @authors = []
     @papers = []
+    @isbn_idx = {}
   end
 
   def load_csv(files, col_sep = ";")
@@ -46,7 +47,12 @@ class Library
   end
 
   def load_papers(files, col_sep = ';')
-    csv = load_csv(files, col_sep)
+    files.each do |file|
+      _load_papers(file, col_sep)
+    end
+  end
+  def _load_papers(files, col_sep = ';')
+    csv = load_csv([files], col_sep)
     optional_map = {
       "publishedAt" => "published_at"
     }
@@ -62,7 +68,19 @@ class Library
         prop_name = optional_map.fetch(optional_col, optional_col)
         paper.send("#{prop_name}=", row[index])
       end
+      @isbn_idx[paper.isbn] = @papers.count
       @papers.append(paper)
     end
   end
+
+  def find(isbn = nil)
+    if isbn
+      idx = @isbn_idx.fetch(isbn, nil)
+      if idx == nil
+        return nil
+      end
+      @papers[idx]
+    end
+  end
+
 end
