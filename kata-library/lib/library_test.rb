@@ -80,6 +80,21 @@ class TestLibrary < Test::Unit::TestCase
     assert_equal("Vinum", papers[-1].title)
   end
 
+  # def test_print_books
+  #
+  # end
+
+  def test_print_details
+    library = Library.new
+    library.load_papers(["../data/books.csv"])
+    formatted_book = <<EOS
+Title: Das Perfekte Dinner. Die besten Rezepte
+ISBN: 2221-5548-8585
+Authors: null-lieblich@echocat.org
+Description: Sie wollen auch ein perfektes Dinner kreieren? Mit diesem Buch gelingt es Ihnen!
+EOS
+    assert_equal(formatted_book, library.papers[3].pretty_print)
+  end
 
 
 end

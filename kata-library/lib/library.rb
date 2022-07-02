@@ -19,6 +19,17 @@ class Paper
     @authors = authors
     @description = description
     @published_at = published_at
+    @isbns = []
+  end
+
+  def pretty_print
+    puts "Title: #{@title}"
+    puts "ISBN: #{@isbn}"
+    puts "Authors: #{@authors}"
+    puts "Description: #{@description}"
+    # if @published_at
+    #   puts "Title: #{@published_at}"
+    # end
   end
 end
 
@@ -72,6 +83,7 @@ class Library
 
       paper_idx = @papers.count
       @papers.append(paper)
+      # [0,null,2,3]
       @isbn_idx[paper.isbn] = paper_idx
       unless @authors_idx.has_key?(paper.authors)
         @authors_idx[paper.authors] = []
